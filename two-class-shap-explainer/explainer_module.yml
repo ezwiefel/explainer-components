@@ -1,0 +1,41 @@
+# Copyright (c) 2021 Microsoft
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+$schema: https://componentsdk.azureedge.net/jsonschema/CommandComponent.json
+name: microsoft.com.azureml.interpret.classification.shap_kernel_explainer
+version: 0.1.0
+display_name: Two-Class Classification SHAP Kernel Explainer
+type: CommandComponent
+description: Explain a trained model using the SHAP Kernel explainer. This is an estimation of the effect of each feature on the model's prediction and the estimation can change depending on sample dataset and sample size chosen.
+tags:
+  Model Scoring & Evaluation:
+  Explanations:
+is_deterministic: true
+inputs:
+  trained_model:
+    type: ModelDirectory
+    description: The trained model file
+    optional: false
+  sample_data:
+    type: DataFrameDirectory
+    description: Predict data
+    optional: false
+  target_column:
+    type: string
+    description: The target column name
+    optional: false
+  sample_data_size:
+    type: integer
+    default: 1000
+    description: The number of rows to use for the explainer
+    optional: false
+command: >-
+  python run.py --trained-model {inputs.trained_model} --sample-data {inputs.sample_data} --target-column {inputs.target_column} --sample-size {inputs.sample_data_size}
+environment:
+  docker:
+    image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+  conda:
+    conda_dependencies_file: conda_environment.yml
+  os: Linux
+code: .

@@ -1,0 +1,20 @@
+# Copyright (c) 2021 Microsoft
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+name: project_environment
+channels:
+  - defaults
+dependencies:
+  - python=3.6.8
+  - pip=20.2
+  - pip:
+      - azureml-defaults
+      - azureml-dataprep>=1.6
+      - interpret==0.2.7
+      - interpret-community==0.20.0
+      - azureml-designer-classic-modules==0.0.155
+      - azureml-designer-serving==0.0.10
+      - typer==0.4.0
+      - scikit-learn==0.22.2
