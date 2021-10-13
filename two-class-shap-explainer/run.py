@@ -77,7 +77,7 @@ def main(
     schema = get_model_schema(model_dir)
 
     column_names = [col['name'] for col in schema['columnAttributes'] if col['name'] != target_column]
-    run.log('column_names', column_names)
+    run.log_list('column_names', column_names)
     x_df, y_df = get_data(sample_data_path, target_column, column_names)
 
     explainer, norm_x = get_kernel_explainer_model(model_dir, x_df, column_names)
