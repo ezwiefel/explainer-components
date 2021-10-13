@@ -5,7 +5,7 @@
 import json
 from os import PathLike
 from pathlib import Path
-from typing import Tuple
+from typing import Tuple, Iterable
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -28,8 +28,8 @@ def get_model_schema(model_directory: ModelDirectory) -> dict:
     return schema
 
 
-def get_data(data_path: PathLike, target_column: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    df = load_data_frame_from_directory(data_path).data
+def get_data(data_path: PathLike, target_column: str, column_names: Iterable[str]) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    df = load_data_frame_from_directory(data_path).data[column_names]
 
     x_df = df.drop(target_column, axis=1).astype(float)
     y_df = df[target_column].astype(float)
@@ -75,9 +75,9 @@ def main(
     model_dir = ModelDirectory.load(trained_model_path)
 
     schema = get_model_schema(model_dir)
-    x_df, y_df = get_data(sample_data_path, target_column)
 
     column_names = [col['name'] for col in schema['columnAttributes'] if col['name'] != target_column]
+    x_df, y_df = get_data(sample_data_path, target_column, column_names)
 
     explainer, norm_x = get_kernel_explainer_model(model_dir, x_df, column_names)
     global_explanation, y_sub = get_global_explanations(explainer, norm_x, y_df, sample_size)
