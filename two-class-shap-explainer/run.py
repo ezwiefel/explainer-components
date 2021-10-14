@@ -29,7 +29,7 @@ def get_model_schema(model_directory: ModelDirectory) -> dict:
 
 
 def get_data(data_path: PathLike, target_column: str, column_names: Iterable[str]) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    df = load_data_frame_from_directory(data_path).data[column_names + target_column]
+    df = load_data_frame_from_directory(data_path).data[column_names.append(target_column)]
 
     x_df = df.drop(target_column, axis=1).astype(float)
     y_df = df[target_column].astype(float)
